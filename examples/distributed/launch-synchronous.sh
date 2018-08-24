@@ -8,7 +8,8 @@ export NODES=$(cat nodes | head -n $NUM_NODES)
 export MASTER_ADDRESS=$(echo $NODES | awk '{print $1}')
 export MASTER_ADDRESS=$(host $MASTER_ADDRESS | head -n 1 | awk '{print $4}')
 export MASTER_PORT=1234
-export BATCH_SIZE=50
+export BATCH_SIZE=5
+export DISTRIBUTED_FS=1
 
 # Retrieve the user's password and username for SSH authentication.
 read -sp "Username: " USERNAME
@@ -16,15 +17,29 @@ echo ""
 read -sp "Password: " PASSWORD
 echo ""
 
-NODE_RANK=0
-for NODE in $NODES; do
-    # Kill all the Python processes on the machine.
-    sshpass -p $PASSWORD ssh $USERNAME@$NODE "killall -9 python" > /dev/null
-    # Copy the script to the optimization nodes.
+# Copy the files to the required machines.
+# Check if a distributed filesystem is present.
+if [ $DISTRIBUTED_FS -eq 1 ]; then
+    # Copy the files once to the primary node.
+    NODE=$(cat nodes | head -n 1)
+    # Copy the required files.
     sshpass -p $PASSWORD scp "model.py" $USERNAME@$NODE:~/"model.py"
     sshpass -p $PASSWORD scp $SCRIPT $USERNAME@$NODE:~/$SCRIPT
+else
+    # Copy the required files to all nodes.
+    for NODE in $NODES; do
+        # Copy the required files.
+        sshpass -p $PASSWORD scp "model.py" $USERNAME@$NODE:~/"model.py"
+        sshpass -p $PASSWORD scp $SCRIPT $USERNAME@$NODE:~/$SCRIPT
+    done
+fi
+
+NODE_RANK=0
+for NODE in $NODES; do
     # Initiate the optimization procedure at the current node.
     sshpass -p $PASSWORD ssh $USERNAME@$NODE "\
+        killall -9 python; \
+        source .bashrc; \
         export BATCH_SIZE=$BATCH_SIZE; \
         python -m torch.distributed.launch \
             --nproc_per_node=$NUM_PROCS_NODE \
