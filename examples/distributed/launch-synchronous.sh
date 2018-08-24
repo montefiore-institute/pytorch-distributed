@@ -23,21 +23,21 @@ if [ $DISTRIBUTED_FS -eq 1 ]; then
     # Copy the files once to the primary node.
     NODE=$(cat nodes | head -n 1)
     # Copy the required files.
-    sshpass -p $PASSWORD scp "model.py" $USERNAME@$NODE:~/"model.py"
-    sshpass -p $PASSWORD scp $SCRIPT $USERNAME@$NODE:~/$SCRIPT
+    sshpass -p $PASSWORD scp -oStrictHostKeyChecking=no "model.py" $USERNAME@$NODE:~/"model.py"
+    sshpass -p $PASSWORD scp -oStrictHostKeyChecking=no $SCRIPT $USERNAME@$NODE:~/$SCRIPT
 else
     # Copy the required files to all nodes.
     for NODE in $NODES; do
         # Copy the required files.
-        sshpass -p $PASSWORD scp "model.py" $USERNAME@$NODE:~/"model.py"
-        sshpass -p $PASSWORD scp $SCRIPT $USERNAME@$NODE:~/$SCRIPT
+        sshpass -p $PASSWORD scp -oStrictHostKeyChecking=no "model.py" $USERNAME@$NODE:~/"model.py"
+        sshpass -p $PASSWORD scp -oStrictHostKeyChecking=no $SCRIPT $USERNAME@$NODE:~/$SCRIPT
     done
 fi
 
 NODE_RANK=0
 for NODE in $NODES; do
     # Initiate the optimization procedure at the current node.
-    sshpass -p $PASSWORD ssh $USERNAME@$NODE "\
+    sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no $USERNAME@$NODE "\
         killall -9 python; \
         source .bashrc; \
         export BATCH_SIZE=$BATCH_SIZE; \
