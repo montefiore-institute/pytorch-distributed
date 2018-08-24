@@ -1,7 +1,3 @@
-"""
-Asynchronous optimizer definitions.
-"""
-
 import torch
 import torch.distributed as dist
 
