@@ -28,7 +28,7 @@ def train(model):
     #model = torch.nn.parallel.DistributedDataParallel(model) # For GPU
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
     time_start = time.time()
-    for i in range(100):
+    for i in range(500):
         optimizer.zero_grad()
         x = torch.randn(batch_size, 1, 64, 64)
         y = torch.randn(batch_size, 1)

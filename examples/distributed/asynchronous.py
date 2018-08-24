@@ -32,7 +32,7 @@ def main():
 def run_worker(model, optimizer):
     batch_size = int(os.environ["BATCH_SIZE"])
     mse = torch.nn.MSELoss()
-    for i in range(100):
+    for i in range(500):
         optimizer.zero_grad()
         x = torch.randn(batch_size, 1, 64, 64)
         y = torch.randn(batch_size, 1)
@@ -43,7 +43,7 @@ def run_worker(model, optimizer):
 
 def run_master(model, optimizer):
     num_workers = len(optimizer.workers())
-    steps = 100 * num_workers
+    steps = 500 * num_workers
     time_start = time.time()
     for i in range(steps):
         optimizer.step()
