@@ -1,7 +1,7 @@
 export EPOCHS=1
 export LEARNING_RATE=0.01
 export MOMENTUM=.9
-export NUM_NODES=4
+export NUM_NODES=8
 export NUM_PROCS_NODE=1
 export SCRIPT="synchronous.py"
 export NODES=$(cat nodes | head -n $NUM_NODES)
