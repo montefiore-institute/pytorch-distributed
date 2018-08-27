@@ -26,10 +26,7 @@ class DOWNPOUR(AsynchronousOptimizer):
 
     def _master_procedure(self):
         # Receive the rank of the next worker in the queue.
-        dist.recv(self.rank.data)
-        worker_rank = int(self.rank.item())
-        # Acknowledge the worker.
-        dist.isend(self.rank.data, dst=worker_rank)
+        worker_rank = self._next_worker()
         # Receive the update and store it in the parameter buffer.
         requests = []
         for group in self.param_groups:

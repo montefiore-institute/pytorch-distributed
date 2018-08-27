@@ -38,6 +38,7 @@ def run_worker(model, optimizer):
         y = torch.randn(batch_size, 1)
         loss = mse(model(x), y)
         loss.backward()
+        print(dist.get_rank(), loss.item())
         optimizer.step()
 
 
