@@ -48,6 +48,7 @@ class AsynchronousOptimizer(Optimizer):
         data, address = self._socket.recvfrom(10)
         data = data.decode().split('.')[0]
         rank = int(data)
+        dist.isend(self.rank.data, rank)
 
         return rank
 
