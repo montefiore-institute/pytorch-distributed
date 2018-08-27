@@ -25,7 +25,7 @@ class AsynchronousOptimizer(Optimizer):
             self._workers = list(range(1, get_world_size()))
         else:
             self._workers = workers
-        self._socket = socket.socket(socket.AF_INET, sock.SOCK_DGRAM)
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._rank_bytes = str(get_rank()).zfill(10).encode()
         self._master_address = (os.environ["MASTER_ADDR"], 5123)
         if is_master():
