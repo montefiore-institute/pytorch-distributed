@@ -56,10 +56,13 @@ class GEMGlobal(AsynchronousOptimizer):
                 requests[index].wait()
                 # Check if the proxy needs to be updated.
                 # Original method:
+                #proxy.data *= momentum
+                #proxy.data += parameter_buffer.data
+                # Alternative:
                 proxy.data *= momentum
-                proxy.data += parameter_buffer.data
+                proxy.data += parameter_buffer.data / self._num_workers
                 pi = (proxy.data.abs() - (p.data - stale.data).abs()) / (parameter_buffer.data.abs() + epsilon)
-                pi.clamp_(min=0., max=10.)
+                pi.clamp_(min=0., max=5.)
                 parameter_buffer *= pi
                 p.data.add_(parameter_buffer.data)
                 dist.isend(p.data, dst=worker_rank)
