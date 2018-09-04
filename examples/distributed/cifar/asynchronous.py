@@ -55,7 +55,7 @@ def worker_procedure(arguments, model, optimizer):
             loss = criterion(y_hat, y)
             optimizer.zero_grad()
             loss.backward()
-            if dist.get_rank() == 0 and batch_index % 10 == 0:
+            if dist.get_rank() == 1 and batch_index % 10 == 0:
                 print(loss.item())
             optimizer.step()
 
