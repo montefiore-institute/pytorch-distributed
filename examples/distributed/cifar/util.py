@@ -41,7 +41,7 @@ def download_data(arguments):
 
 
 def allocate_train_loader(arguments):
-    dataset = fetch_training_set()
+    dataset = fetch_training_set(arguments)
     loader = torch.utils.data.DataLoader(dataset, batch_size=arguments.batch_size,
                                          shuffle=True, num_workers=arguments.prefetchers)
 
@@ -50,7 +50,7 @@ def allocate_train_loader(arguments):
 
 
 def allocate_validation_loader(arguments):
-    dataset = fetch_validation_set()
+    dataset = fetch_validation_set(arguments)
     loader = torch.utils.data.DataLoader(dataset, batch_size=arguments.batch_size,
                                          shuffle=True, num_workers=arguments.prefetchers)
 
@@ -84,3 +84,10 @@ def fetch_validation_set(arguments):
 
 def initialize_distributed_backend(arguments):
     dist.init_process_group(backend=arguments.backend, init_method="env://")
+
+
+
+def num_train_batches(arguments):
+    loader = allocate_train_loader(arguments)
+
+    return len(loader)

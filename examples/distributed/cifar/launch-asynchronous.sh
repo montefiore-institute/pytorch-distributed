@@ -1,4 +1,4 @@
-export EPOCHS=10
+export EPOCHS=200
 export LEARNING_RATE=0.01
 export MOMENTUM=.9
 export NUM_NODES=9
@@ -8,7 +8,7 @@ export MAIN_SCRIPT="asynchronous.py"
 export NODES=$(cat nodes | shuf | head -n $NUM_NODES)
 export MASTER_ADDRESS=$(echo $NODES | awk '{print $1}')
 export MASTER_PORT=1234
-export BATCH_SIZE=128
+export BATCH_SIZE=256
 export DISTRIBUTED_FS=1
 
 # Retrieve the user's password and username for SSH authentication.
