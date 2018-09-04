@@ -63,7 +63,7 @@ class GEMGlobal(AsynchronousOptimizer):
                 proxy.data *= momentum
                 proxy.data += parameter_buffer.data / self._num_workers
                 pi = (proxy.data.abs() - (p.data - stale.data)) / (parameter_buffer.data.abs() + epsilon)
-                pi.clamp_(min=0., max=5.)
+                pi.clamp_(min=0., max=2.)
                 parameter_buffer *= pi
                 p.data.add_(parameter_buffer.data)
                 dist.isend(p.data, dst=worker_rank)
