@@ -50,7 +50,9 @@ for NODE in $NODES; do
             --batch-size $BATCH_SIZE \
             --epochs $EPOCHS \
             --lr $LEARNING_RATE \
-            --momentum $MOMENTUM
+            --momentum $MOMENTUM \
+            --download \
+            --downloadm
     " &
     NODE_RANK=$(($NODE_RANK + 1))
 done
