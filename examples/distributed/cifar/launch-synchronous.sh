@@ -1,10 +1,10 @@
 export EPOCHS=3
 export LEARNING_RATE=0.01
 export MOMENTUM=.9
-export NUM_NODES=11
+export NUM_NODES=10
 export NUM_PROCS_NODE=1
-export SCRIPTS="asynchronous.py util.py model.py"
-export MAIN_SCRIPT="asynchronous.py"
+export SCRIPTS="synchronous.py util.py model.py"
+export MAIN_SCRIPT="synchronous.py"
 export NODES=$(cat nodes | shuf | head -n $NUM_NODES)
 export MASTER_ADDRESS=$(echo $NODES | awk '{print $1}')
 export MASTER_PORT=1234
