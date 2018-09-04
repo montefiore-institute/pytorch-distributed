@@ -22,7 +22,7 @@ def parse_arguments():
     parser.add_argument("--downloadm", type=bool, nargs='?', const=True, default=False, help="Only the master can download and process the CIFAR dataset")
     parser.add_argument("--data-path", type=str, default="data/", help="Data path")
     parser.add_argument("--prefetchers", type=int, default=2, help="Number of asynchronous data prefetchers")
-    arguments = parser.parse_args()
+    arguments, _ = parser.parse_known_args()
 
     return arguments
 
@@ -33,8 +33,8 @@ def download_data(arguments):
     if arguments.download:
         # Check if only the master needs to download the files.
         if not arguments.downloadm or is_master():
-            fetch_training_set()
-            fetch_validation_set()
+            fetch_training_set(arguments)
+            fetch_validation_set(arguments)
     # Wait for all processes to complete.
     dist.barrier()
 
@@ -58,7 +58,7 @@ def allocate_validation_loader(arguments):
 
 
 
-def fetch_transformations(arguments):
+def fetch_transformations():
     transformations = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))

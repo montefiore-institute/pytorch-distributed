@@ -3,9 +3,9 @@ export LEARNING_RATE=0.01
 export MOMENTUM=.9
 export NUM_NODES=9
 export NUM_PROCS_NODE=1
-export SCRIPTS=("asynchronous.py" "util.py" "model.py")
+export SCRIPTS="asynchronous.py util.py model.py"
 export MAIN_SCRIPT="asynchronous.py"
-export NODES=$(cat nodes | shuf | head -n $NUM_NODEs)
+export NODES=$(cat nodes | shuf | head -n $NUM_NODES)
 export MASTER_ADDRESS=$(echo $NODES | awk '{print $1}')
 export MASTER_PORT=1234
 export BATCH_SIZE=128
@@ -42,7 +42,7 @@ for NODE in $NODES; do
         killall -9 python; \
         source .bashrc; \
         python -m torch.distributed.launch \
-            --nproc_per_nodes=$NUM_PROCS_NODE \
+            --nproc_per_node=$NUM_PROCS_NODE \
             --nnodes=$NUM_NODES \
             --node_rank=$NODE_RANK \
             --master_addr=$MASTER_ADDRESS \
