@@ -56,8 +56,8 @@ def worker_procedure(arguments, model, optimizer):
             loss = criterion(y_hat, y)
             optimizer.zero_grad()
             loss.backward()
-            print(dist.get_rank(), loss.item())
             optimizer.step()
+    print(loss.item())
     print("DONE")
 
 

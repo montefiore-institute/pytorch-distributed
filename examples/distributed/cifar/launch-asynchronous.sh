@@ -1,5 +1,5 @@
 export EPOCHS=3
-export LEARNING_RATE=0.01
+export LEARNING_RATE=0.1
 export MOMENTUM=.9
 export NUM_NODES=11
 export NUM_PROCS_NODE=1
