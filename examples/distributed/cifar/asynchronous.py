@@ -21,6 +21,7 @@ def main():
     download_data(arguments)
     model = allocate_model()
     optimizer = GEM(model.parameters(), lr=arguments.lr, momentum=arguments.momentum)
+    #optimizer = DOWNPOUR(model.parameters(), lr=arguments.lr)
     if is_master():
         master_procedure(arguments, model, optimizer)
     else:
@@ -55,9 +56,9 @@ def worker_procedure(arguments, model, optimizer):
             loss = criterion(y_hat, y)
             optimizer.zero_grad()
             loss.backward()
-            if dist.get_rank() == 1 and batch_index % 10 == 0:
-                print(loss.item())
+            print(dist.get_rank(), loss.item())
             optimizer.step()
+    print("DONE")
 
 
 
